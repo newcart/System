@@ -21,9 +21,9 @@
   },
   "extra": {
     "class": [
-      "Newcart\\System\\ComposerInstallers\\NewcartOpencartInstallerPlugin",
-      "Newcart\\System\\ComposerInstallers\\NewcartExtensionInstallerPlugin",
-      "Newcart\\System\\ComposerInstallers\\NewcartThemeInstallerPlugin"
+      "Newcart\\System\\ComposerInstallers\\OpencartInstallerPlugin",
+      "Newcart\\System\\ComposerInstallers\\ExtensionInstallerPlugin",
+      "Newcart\\System\\ComposerInstallers\\ThemeInstallerPlugin"
     ]
   }
 }
