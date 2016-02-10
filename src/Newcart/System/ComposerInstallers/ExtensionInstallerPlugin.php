@@ -1,16 +1,16 @@
 <?php
 
-namespace Prhost\System\ComposerInstallers;
+namespace Newcart\System\ComposerInstallers;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 
-class OpenCommerceThemeInstallerPlugin implements PluginInterface
+class ExtensionInstallerPlugin implements PluginInterface
 {
     public function activate(Composer $composer, IOInterface $io)
     {
-        $installer = new OpenCommerceThemeInstaller($io, $composer);
+        $installer = new ExtensionInstaller($io, $composer);
         $composer->getInstallationManager()->addInstaller($installer);
     }
 }

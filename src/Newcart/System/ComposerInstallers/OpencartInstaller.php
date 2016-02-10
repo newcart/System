@@ -1,18 +1,18 @@
 <?php
 
-namespace Prhost\System\ComposerInstallers;
+namespace Newcart\System\ComposerInstallers;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 
-class OpenCommerceOpencartInstaller extends LibraryInstaller
+class OpencartInstaller extends LibraryInstaller
 {
     /**
      * {@inheritDoc}
      */
     public function getInstallPath(PackageInterface $package)
     {
-        return 'opencart/';
+        return 'core/';
     }
 
     /**
@@ -20,6 +20,6 @@ class OpenCommerceOpencartInstaller extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return 'opencommerce-opencart' === $packageType;
+        return '-opencart' === $packageType;
     }
 }

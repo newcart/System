@@ -1,6 +1,6 @@
 {
-  "name": "prhost/opencommerce-system",
-  "description": "OpenCommerce System",
+  "name": "newcart/system",
+  "description": "Newcart ecommerce System",
   "type": "composer-plugin",
   "minimum-stability": "dev",
   "license": "proprietary",
@@ -16,14 +16,14 @@
   },
   "autoload": {
     "psr-0": {
-      "Prhost\\System": "src/"
+      "Newcart\\System": "src/"
     }
   },
   "extra": {
     "class": [
-      "Prhost\\System\\ComposerInstallers\\OpenCommerceOpencartInstallerPlugin",
-      "Prhost\\System\\ComposerInstallers\\OpenCommerceExtensionInstallerPlugin",
-      "Prhost\\System\\ComposerInstallers\\OpenCommerceThemeInstallerPlugin"
+      "Newcart\\System\\ComposerInstallers\\NewcartOpencartInstallerPlugin",
+      "Newcart\\System\\ComposerInstallers\\NewcartExtensionInstallerPlugin",
+      "Newcart\\System\\ComposerInstallers\\NewcartThemeInstallerPlugin"
     ]
   }
 }
