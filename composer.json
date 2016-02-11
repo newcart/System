@@ -16,7 +16,7 @@
   },
   "autoload": {
     "psr-0": {
-      "Newcart\\System": "src/"
+      "Newcart\\System\\ComposerInstallers": "src/"
     }
   },
   "extra": {
