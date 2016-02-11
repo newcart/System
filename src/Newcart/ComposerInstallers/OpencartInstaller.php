@@ -1,6 +1,6 @@
 <?php
 
-namespace Newcart\System\ComposerInstallers;
+namespace Newcart\ComposerInstallers;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;

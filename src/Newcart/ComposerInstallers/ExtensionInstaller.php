@@ -1,11 +1,11 @@
 <?php
 
-namespace Newcart\System\ComposerInstallers;
+namespace Newcart\ComposerInstallers;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
 
-class ThemeInstaller extends LibraryInstaller
+class ExtensionInstaller extends LibraryInstaller
 {
     /**
      * {@inheritDoc}
@@ -14,9 +14,11 @@ class ThemeInstaller extends LibraryInstaller
     {
         $prettyName = explode('/', $package->getPrettyName());
         $devName = $prettyName[0];
-        $themeName = $prettyName[1];
+        $extensionName = $prettyName[1];
 
-        return 'theme/' . $devName . '/' . $themeName . '/';
+//            throw new \InvalidArgumentException('O pacote nao e uma extensao valida.');
+
+        return 'extensions/' . $devName . '/' . $extensionName . '/';
     }
 
     /**
@@ -24,6 +26,6 @@ class ThemeInstaller extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return '-theme' === $packageType;
+        return '-extension' === $packageType;
     }
 }
