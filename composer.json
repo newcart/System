@@ -16,14 +16,14 @@
   },
   "autoload": {
     "psr-0": {
-      "Newcart\\ComposerInstallers": "src/"
+      "Newcart\\System": "src/"
     }
   },
   "extra": {
     "class": [
-      "Newcart\\ComposerInstallers\\OpencartInstallerPlugin",
-      "Newcart\\ComposerInstallers\\ExtensionInstallerPlugin",
-      "Newcart\\ComposerInstallers\\ThemeInstallerPlugin"
+      "Newcart\\System\\ComposerInstallers\\OpencartInstallerPlugin",
+      "Newcart\\System\\ComposerInstallers\\ExtensionInstallerPlugin",
+      "Newcart\\System\\ComposerInstallers\\ThemeInstallerPlugin"
     ]
   }
 }

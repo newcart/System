@@ -1,6 +1,6 @@
 <?php
 
-namespace Newcart\ComposerInstallers;
+namespace Newcart\System\ComposerInstallers;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
@@ -26,6 +26,6 @@ class ExtensionInstaller extends LibraryInstaller
      */
     public function supports($packageType)
     {
-        return '-extension' === $packageType;
+        return 'newcart-extension' === $packageType;
     }
 }
