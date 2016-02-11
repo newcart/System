@@ -12,7 +12,8 @@
   ],
   "require": {
     "composer-plugin-api": "^1.0",
-    "twig/twig": "^1.24"
+    "twig/twig": "^1.24",
+    "hassankhan/config": "^0.10.0"
   },
   "autoload": {
     "psr-0": {
