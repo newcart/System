@@ -9,7 +9,6 @@ class Util
     {
         $root = realpath(__DIR__ . '/../../../../../../../');
 
-        require_once $root . '/config/app.php';
-        require_once $root . '/core/constants.php';
+        require_once __DIR__ . '/../constants.php';
     }
 }

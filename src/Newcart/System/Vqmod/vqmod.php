@@ -2,10 +2,6 @@
 
 namespace Newcart\System\Vqmod;
 
-use Newcart\System\Util\Util;
-
-Util::requireConstants();
-
 /**
  * Vqmod
  * @description Main Object used
