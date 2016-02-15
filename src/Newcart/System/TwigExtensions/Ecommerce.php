@@ -1,6 +1,7 @@
 <?php
 
 namespace Newcart\System\TwigExtensions;
+use Newcart\System\Libraries\Theme;
 
 /**
  * Metastore Extension class.
@@ -45,9 +46,18 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
-     * @param null  $route
+     * Get Theme library intance
+     * @return Theme
+     */
+    private function getThemeInstance()
+    {
+        return new Theme($this->registry);
+    }
+
+    /**
+     * @param null $route
      * @param array $args
-     * @param bool  $secure
+     * @param bool $secure
      *
      * @return string
      */
@@ -93,7 +103,7 @@ class Ecommerce extends \Twig_Extension
 
     public function sessionFunction($key = '')
     {
-        if($key) {
+        if ($key) {
             $session = $this->registry->get('session');
             return isset($session->data[$key]) ? $session->data[$key] : '';
         } else {
@@ -165,8 +175,8 @@ class Ecommerce extends \Twig_Extension
      * @param        $filename
      * @param string $context
      *
-     * @param null   $width
-     * @param null   $height
+     * @param null $width
+     * @param null $height
      *
      * @return string|void
      */
@@ -224,32 +234,25 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
-     * @param string $path
-     * @param bool   $theme if theme path
+     * Get asset path
+     * @param string $src
      * @param bool $minify
      * @return string
      */
-    public function assetFunction($path, $minify = false)
+    public function assetFunction($src, $minify = false)
     {
-        if (!$this->is_admin) {
-            if (file_exists(DIR_TEMPLATE . $this->registry->get('config')->get('config_template') . '/' . PATH_THEME_ASSETS . $path)) {
-                return PATH_THEME . $this->registry->get('config')->get('config_template') . '/' . PATH_THEME_ASSETS . $path;
-            } else if (file_exists(DIR_TEMPLATE . 'default/' . PATH_THEME_ASSETS . $path)) {
-                return PATH_THEME . 'default/' . PATH_THEME_ASSETS . $path;
-            }
-        } else if (file_exists(DIR_TEMPLATE . '../' . $path)) {
-            return 'admin/view/' . $path;
-        }
-
-        return $path;
+        return $this
+            ->getThemeInstance()
+            ->asset($src, $minify);
     }
 
-    private function minify($path) {
+    private function minify($path)
+    {
         $ext = pathinfo($path, PATHINFO_EXTENSION);
 
-        if($ext == 'css') {
+        if ($ext == 'css') {
             $minifier = new \MatthiasMullie\Minify\CSS($path);
-        } else if($ext == 'js') {
+        } else if ($ext == 'js') {
             $minifier = new \MatthiasMullie\Minify\JS($path);
         }
 
@@ -269,9 +272,9 @@ class Ecommerce extends \Twig_Extension
 
     /**
      * @param       $total
-     * @param null  $route
+     * @param null $route
      * @param array $args
-     * @param null  $template
+     * @param null $template
      *
      * @return string
      */
@@ -319,7 +322,7 @@ class Ecommerce extends \Twig_Extension
      * @param        $number
      * @param string $currency
      * @param string $value
-     * @param bool   $format
+     * @param bool $format
      *
      * @return mixed
      */
@@ -377,7 +380,7 @@ class Ecommerce extends \Twig_Extension
     /**
      * @param        $value
      * @param string $end
-     * @param null   $limit
+     * @param null $limit
      *
      * @return string
      */
@@ -434,13 +437,13 @@ class Ecommerce extends \Twig_Extension
         $document = $this->registry->get('document');
 
         $globals = array(
-            'document_title'       => $document->getTitle(),
+            'document_title' => $document->getTitle(),
             'document_description' => $document->getDescription(),
-            'document_keywords'    => $document->getKeywords(),
-            'document_links'       => $document->getLinks(),
-            'document_styles'      => $document->getStyles(),
-            'document_scripts'     => $document->getScripts(),
-            'route'                => isset($this->registry->get('request')->get['route']) ? $this->registry->get('request') : '',
+            'document_keywords' => $document->getKeywords(),
+            'document_links' => $document->getLinks(),
+            'document_styles' => $document->getStyles(),
+            'document_scripts' => $document->getScripts(),
+            'route' => isset($this->registry->get('request')->get['route']) ? $this->registry->get('request') : '',
         );
 
         if ($this->is_admin) {

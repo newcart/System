@@ -16,11 +16,20 @@ $base_url = str_replace(['/core/admin/', '/core', '/index.php'], '/', $base_url)
 define('BASEURL', $base_url);
 
 // HTTP
-define('HTTP_SERVER', 'http://' . BASEURL . 'core/admin/');
+if(IS_ADMIN) {
+    define('HTTP_SERVER', 'http://' . BASEURL . 'core/admin/');
+} else {
+    define('HTTP_SERVER', 'http://' . BASEURL);
+}
+
 define('HTTP_CATALOG', 'http://' . BASEURL);
 
 // HTTPS
-define('HTTPS_SERVER', 'https://' . BASEURL . 'core/admin/');
+if(IS_ADMIN) {
+    define('HTTPS_SERVER', 'http://' . BASEURL . 'core/admin/');
+} else {
+    define('HTTPS_SERVER', 'http://' . BASEURL);
+}
 define('HTTPS_CATALOG', 'http://' . BASEURL);
 
 // DIR

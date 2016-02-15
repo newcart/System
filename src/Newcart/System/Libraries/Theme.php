@@ -17,12 +17,27 @@ class Theme
     }
 
     /**
-     * Pega o caminho do asset do tema
-     * @param $path
+     * Get asset path
+     * @param string $src
+     * @param bool $minify
+     * @return string
      */
-    public function asset($path)
+    public function asset($src, $minify = false)
     {
+        if (!IS_ADMIN) {
 
+            $config = $this->registry->get('config');
+            if (file_exists(DIR_TEMPLATE . $this->getName() . '/' . $config->get('assets_path') . '/' . $src)) {
+                return $config->get('theme_path') . '/' . $this->getName() . '/' . $config->get('assets_path') . '/' . $src;
+            }
+
+        } else if (file_exists(DIR_TEMPLATE . '../' . $src)) {
+
+            return 'admin/view/' . $src;
+
+        }
+
+        return $src;
     }
 
     /**
