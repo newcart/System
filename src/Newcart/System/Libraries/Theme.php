@@ -2,7 +2,12 @@
 
 namespace Newcart\System\Libraries;
 
-
+/**
+ * Class Theme
+ * @description Library desenvolvida para
+ * ajudar o desenvolvedor no tema
+ * @package Newcart\System\Libraries
+ */
 class Theme
 {
     /**
@@ -17,18 +22,28 @@ class Theme
     }
 
     /**
+     * Shorcut get config
+     * @param $key
+     * @return mixed
+     */
+    private function getConfig($key)
+    {
+        return $this->registry->get('config')->get($key);
+    }
+
+    /**
      * Get asset path
      * @param string $src
      * @param bool $minify
      * @return string
+     * @todo minify files css and js
      */
     public function asset($src, $minify = false)
     {
         if (!IS_ADMIN) {
 
-            $config = $this->registry->get('config');
-            if (file_exists(DIR_TEMPLATE . $this->getName() . '/' . $config->get('assets_path') . '/' . $src)) {
-                return $config->get('theme_path') . '/' . $this->getName() . '/' . $config->get('assets_path') . '/' . $src;
+            if (file_exists(DIR_TEMPLATE . $this->getName() . '/' . $this->getConfig('assets_path') . '/' . $src)) {
+                return $this->getConfig('theme_path') . '/' . $this->getName() . '/' . $this->getConfig('assets_path') . '/' . $src;
             }
 
         } else if (file_exists(DIR_TEMPLATE . '../' . $src)) {
@@ -46,6 +61,19 @@ class Theme
      */
     public function getName()
     {
-        return $this->registry->get('config')->get('config_template');
+        return $this->getConfig('config_template');
+    }
+
+    /**
+     * Get theme url
+     * @return string url
+     */
+    public function getUrl()
+    {
+        if ($this->getConfig('config_secure')) {
+            return HTTPS_SERVER . '' . $this->getConfig('theme_path') . '/' . $this->getName() . '/';
+        }
+
+        return HTTP_SERVER . '' . $this->getConfig('theme_path') . '/' . $this->getName() . '/';
     }
 }
