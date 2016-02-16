@@ -1,6 +1,7 @@
 <?php
 
 namespace Newcart\System\TwigExtensions;
+
 use Newcart\System\Libraries\Theme;
 
 /**
@@ -25,6 +26,20 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
+     * Get Theme library intance
+     * @return Theme
+     */
+    private function getThemeInstance()
+    {
+        return new Theme($this->registry);
+    }
+
+
+    /****************************
+     ******** FUCTIONS **********
+     ****************************/
+
+    /**
      * {@inheritdoc}
      */
     public function getFunctions()
@@ -46,15 +61,8 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
-     * Get Theme library intance
-     * @return Theme
-     */
-    private function getThemeInstance()
-    {
-        return new Theme($this->registry);
-    }
-
-    /**
+     * Url link function
+     *
      * @param null $route
      * @param array $args
      * @param bool $secure
@@ -85,6 +93,8 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
+     * Get Language
+     *
      * @param      $key
      * @param null $file
      *
@@ -101,6 +111,12 @@ class Ecommerce extends \Twig_Extension
         return $language->get($key);
     }
 
+    /**
+     * Get session any of store
+     *
+     * @param string $key
+     * @return mixed|null|string
+     */
     public function sessionFunction($key = '')
     {
         if ($key) {
@@ -112,6 +128,8 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
+     * Get config
+     *
      * @param      $key
      * @param null $file
      *
@@ -128,6 +146,11 @@ class Ecommerce extends \Twig_Extension
         return $config->get($key);
     }
 
+    /**
+     * Check customer is logged
+     *
+     * @return bool
+     */
     public function loggedFunction()
     {
         $customer = $this->registry->get('customer');
@@ -135,8 +158,9 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
-     * @param $value
+     * Check user has permission from access
      *
+     * @param $value
      * @return bool
      */
     public function canAccessFunction($value)
@@ -151,6 +175,8 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
+     * Check user has permission from modify
+     *
      * @param $value
      *
      * @return bool
@@ -166,12 +192,17 @@ class Ecommerce extends \Twig_Extension
         return false;
     }
 
+    /**
+     * Get Customer object
+     * @return mixed|null
+     */
     public function customerFunction()
     {
         return $this->registry->get('customer');
     }
 
     /**
+     * Get and resize images
      * @param        $filename
      * @param string $context
      *
@@ -235,6 +266,7 @@ class Ecommerce extends \Twig_Extension
 
     /**
      * Get asset path
+     *
      * @param string $src
      * @param bool $minify
      * @return string
@@ -246,6 +278,10 @@ class Ecommerce extends \Twig_Extension
             ->asset($src, $minify);
     }
 
+    /**
+     * @todo terminar minificacao dos assets
+     * @param $path
+     */
     private function minify($path)
     {
         $ext = pathinfo($path, PATHINFO_EXTENSION);
@@ -259,6 +295,8 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
+     * Load controller method
+     *
      * @param $file
      *
      * @return mixed
@@ -271,6 +309,8 @@ class Ecommerce extends \Twig_Extension
     }
 
     /**
+     * Make and return pagination
+     *
      * @param       $total
      * @param null $route
      * @param array $args
@@ -301,6 +341,12 @@ class Ecommerce extends \Twig_Extension
             return $pagination->render();
         }
     }
+
+
+
+    /***************************
+     ******** FILTERS **********
+     ***************************/
 
     /**
      * {@inheritdoc}
