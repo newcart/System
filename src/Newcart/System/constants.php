@@ -2,8 +2,8 @@
 
 define('DB_PREFIX', $config->get('db_prefix'));
 
-define('IS_ADMIN', basename(realpath('')) == 'admin' ? true : false);
-define('ENVIRONMENT', IS_ADMIN ? 'admin' : 'catalog');
+$config->set('is_admin', basename(realpath('')) == 'admin' ? true : false);
+$config->set('environment', $config->get('is_admin') ? 'admin' : 'catalog');
 
 //get domain name
 define('DOMAINNAME', isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : null);
@@ -16,7 +16,7 @@ $base_url = str_replace(['/core/admin/', '/core', '/index.php'], '/', $base_url)
 define('BASEURL', $base_url);
 
 // HTTP
-if(IS_ADMIN) {
+if($config->get('is_admin')) {
     define('HTTP_SERVER', 'http://' . BASEURL . 'core/admin/');
 } else {
     define('HTTP_SERVER', 'http://' . BASEURL);
@@ -25,7 +25,7 @@ if(IS_ADMIN) {
 define('HTTP_CATALOG', 'http://' . BASEURL);
 
 // HTTPS
-if(IS_ADMIN) {
+if($config->get('is_admin')) {
     define('HTTPS_SERVER', 'http://' . BASEURL . 'core/admin/');
 } else {
     define('HTTPS_SERVER', 'http://' . BASEURL);
@@ -33,16 +33,16 @@ if(IS_ADMIN) {
 define('HTTPS_CATALOG', 'http://' . BASEURL);
 
 // DIR
-if(IS_ADMIN) {
-    define('DIR_TEMPLATE', DIR_CORE . '/' . ENVIRONMENT . '/view/template/');
+if($config->get('is_admin')) {
+    define('DIR_TEMPLATE', DIR_CORE . '/' . $config->get('environment') . '/view/template/');
 } else {
     define('DIR_TEMPLATE', DIR_ROOT . '/theme/');
 }
 
-define('DIR_APPLICATION', DIR_CORE . '/' . ENVIRONMENT . '/');
+define('DIR_APPLICATION', DIR_CORE . '/' . $config->get('environment') . '/');
 define('DIR_SYSTEM', DIR_CORE . '/system/');
 define('DIR_STORAGE', DIR_ROOT . '/storage');
-define('DIR_LANGUAGE', DIR_CORE . '/' . ENVIRONMENT . '/language/');
+define('DIR_LANGUAGE', DIR_CORE . '/' . $config->get('environment') . '/language/');
 define('DIR_CONFIG', DIR_ROOT . '/config/');
 define('PATH_IMAGE', 'storage/image/');
 define('DIR_IMAGE', DIR_STORAGE . '/image/');

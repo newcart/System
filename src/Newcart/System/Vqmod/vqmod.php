@@ -43,6 +43,12 @@ abstract class Vqmod
      */
     public static function bootup($path = false, $logging = true)
     {
+        $config = $GLOBALS['config'];
+
+        if(!$config->get('enable_vqmod')) {
+            return $path;
+        }
+
         if (!class_exists('DOMDocument')) {
             die('Vqmod::bootup - ERROR - YOU NEED THE PHP "DOMDocument" EXTENSION INSTALLED TO USE Vqmod');
         }
@@ -84,6 +90,11 @@ abstract class Vqmod
      */
     public static function modCheck($sourceFile, $modificationFile = false)
     {
+        $config = $GLOBALS['config'];
+
+        if(!$config->get('enable_vqmod')) {
+            return $sourceFile;
+        }
 
         if (!self::$_folderChecks) {
 
