@@ -22,7 +22,7 @@ class Ecommerce extends \Twig_Extension
     {
         $this->registry = $registry;
 
-        $this->is_admin = IS_ADMIN;
+        $this->is_admin = $registry->get('config')->get('is_admin');
     }
 
     /**
