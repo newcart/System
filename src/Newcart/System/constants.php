@@ -36,7 +36,7 @@ define('HTTPS_CATALOG', 'http://' . BASEURL);
 if($config->get('is_admin')) {
     define('DIR_TEMPLATE', DIR_CORE . '/' . $config->get('environment') . '/view/template/');
 } else {
-    define('DIR_TEMPLATE', DIR_ROOT . '/theme/');
+    define('DIR_TEMPLATE', DIR_ROOT . '/' . $config->get('theme_path') . '/');
 }
 
 define('DIR_APPLICATION', DIR_CORE . '/' . $config->get('environment') . '/');
