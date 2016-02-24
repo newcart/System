@@ -16,8 +16,12 @@ class Theme
      */
     private $registry;
 
-    public function __construct($registry)
+    public function __construct($registry = null)
     {
+        if(!$registry) {
+            global $registry;
+        }
+
         $this->registry = $registry;
     }
 
@@ -26,9 +30,10 @@ class Theme
      * @param $key
      * @return mixed
      */
-    private function getConfig($key)
+    private static function getConfig($key)
     {
-        return $this->registry->get('config')->get($key);
+        $static = new Static;
+        return $static->registry->get('config')->get($key);
     }
 
     /**
@@ -40,7 +45,7 @@ class Theme
      */
     public function asset($src, $minify = false)
     {
-        if (!IS_ADMIN) {
+        if (!$this->getConfig('is_admin')) {
 
             if (file_exists(DIR_TEMPLATE . $this->getName() . '/' . $this->getConfig('assets_path') . '/' . $src)) {
                 return $this->getConfig('theme_path') . '/' . $this->getName() . '/' . $this->getConfig('assets_path') . '/' . $src;
@@ -75,5 +80,10 @@ class Theme
         }
 
         return HTTP_SERVER . '' . $this->getConfig('theme_path') . '/' . $this->getName() . '/';
+    }
+
+    public function getThemes()
+    {
+
     }
 }
