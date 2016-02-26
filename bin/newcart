@@ -30,4 +30,7 @@ $application = new Application();
 //$application->add(new \Newcart\Tool\Commands\RemoveExtensionCommand());
 //$application->add(new \Newcart\Tool\Commands\RemoveAllExtensionCommand());
 //$application->add(new \Newcart\Tool\Commands\ListExtensionCommand());
+//$application->add(new \Newcart\Tool\Commands\ListExtensionCommand());
+$application->add(new \Newcart\Tool\Commands\ClearCacheCommand());
+//$application->add(new \Newcart\Tool\Commands\MigrationCommand());
 $application->run();
