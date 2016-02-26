@@ -10,9 +10,11 @@ foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../../autoload.ph
     }
 }
 
+define('DIR_ROOT', realpath(VENDOR_DIRECTORY . '/../'));
+
 //config opencart
 $load = VENDOR_DIRECTORY . '/newcart/system/src/Newcart/System/load.php';
-if(file_exists($load)) {
+if (file_exists($load)) {
     require_once $load;
 } else {
     print('load file not found' . PHP_EOL);
