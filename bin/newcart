@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+//require composer autoload
+foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
+    if (file_exists($file)) {
+        require_once $file;
+        define('VENDOR_DIRECTORY', realpath(dirname($file)));
+        break;
+    }
+}
+
+//config opencart
+$load = VENDOR_DIRECTORY . '/newcart/system/src/Newcart/System/load.php';
+if(file_exists($load)) {
+    require_once $load;
+} else {
+    print('load file not found' . PHP_EOL);
+    die();
+}
+
+use Symfony\Component\Console\Application;
+
+
+$application = new Application();
+//$application->add(new \Newcart\Tool\Commands\InstallExtensionCommand());
+//$application->add(new \Newcart\Tool\Commands\InstallAllExtensionCommand());
+//$application->add(new \Newcart\Tool\Commands\RemoveExtensionCommand());
+//$application->add(new \Newcart\Tool\Commands\RemoveAllExtensionCommand());
+//$application->add(new \Newcart\Tool\Commands\ListExtensionCommand());
+$application->run();
