@@ -3,7 +3,8 @@
   "description": "Newcart ecommerce System",
   "type": "composer-plugin",
   "minimum-stability": "dev",
-  "license": "proprietary",
+  "license": "MIT",
+  "bin": ["bin/newcart"],
   "authors": [
     {
       "name": "Kallef Alexandre de Souza",
