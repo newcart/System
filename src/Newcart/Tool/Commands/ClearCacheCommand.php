@@ -12,7 +12,7 @@ class ClearCacheCommand extends Command
     {
         $this
             ->setName('clear:cache')
-            ->setDescription('Clear cache');
+            ->setDescription('Clear all cache');
     }
 
     /**
@@ -25,20 +25,38 @@ class ClearCacheCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $paths = [
-            DIR_CACHE . '*',
-            DIR_LOGS . '*',
-            DIR_VQMOD_STORAGE . 'checked.cache',
-            DIR_VQMOD_STORAGE . 'mods.cache',
-            DIR_VQMOD_CACHE . '*',
-            DIR_VQMOD_LOGS . '*',
+            DIR_CACHE,
+            DIR_LOGS,
+            DIR_VQMOD_CACHE . 'checked.cache',
+            DIR_VQMOD_CACHE . 'mods.cache',
+            DIR_VQMOD_CACHE . 'logs/',
+            DIR_VQMOD_CACHE . 'vqcache/',
+            DIR_IMAGE . 'cache/'
         ];
 
         foreach ($paths as $path) {
-            @array_map('unlink', glob($path));
+            $this->recursiveDelete($path);
         }
 
-        $output->writeln('Cache successfully clean.');
+        $output->writeln('<info>Cache successfully clean.</info>');
 
         return true;
+    }
+
+    /**
+     * Delete a file or recursively delete a directory
+     *
+     * @param string $str Path to file or directory
+     */
+    private function recursiveDelete($str)
+    {
+        if (is_file($str)) {
+            return @unlink($str);
+        } elseif (is_dir($str)) {
+            $scan = glob(rtrim($str, '/') . '/*');
+            foreach ($scan as $index => $path) {
+                $this->recursiveDelete($path);
+            }
+        }
     }
 }
