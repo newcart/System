@@ -7,27 +7,25 @@ class Util
 {
     /**
      * Caminho onde a extensoes vao ficar
-     * @todo fazer via arquivo de configuracao
      * @return string
      */
     public static function pathExtension()
     {
-        return ROOTDIR . '/extensions/';
+        global $config;
+        return DIR_ROOT . '/' . $config->get('extension_path') . '/';
     }
 
     /**
      * Caminho da raiz do projeto
-     * @todo fazer via arquivo de configuracao
      * @return string
      */
     public static function pathRoot()
     {
-        return ROOTDIR . '/';
+        return DIR_ROOT;
     }
 
     /**
      * Arquivos a serem ignorados
-     * @todo fazer via arquivo de configuracao
      * @return array
      */
     public static function filesIgnored()

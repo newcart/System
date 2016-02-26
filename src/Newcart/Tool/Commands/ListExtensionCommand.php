@@ -14,24 +14,31 @@ class ListExtensionCommand extends Command
     {
         $this
             ->setName('extension:list')
-            ->setDescription('List extension');
+            ->setDescription('List all extensions installed.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $extensions = glob(Util::pathExtension() . '*', GLOB_ONLYDIR);
+        $extensions = glob(Util::pathExtension() . '*/*', GLOB_ONLYDIR);
+
+        $output->writeln('Extensions List');
 
         $table = new Table($output);
 
         $table
-            ->setHeaders(array('Extension Path'));
+            ->setHeaders(['Vendor', 'Name']);
 
-        foreach ($extensions as $dir) {
-            $extension = str_replace(dirname($dir), '', $dir);
-            $table->addRow([str_replace('/', '', $extension)]);
+        foreach ($extensions as $extension_dir) {
+            $name = str_replace(dirname($extension_dir), '', $extension_dir);
+            $name = str_replace('/', '', $name);
+
+            $vendor = str_replace('/' . $name, '', $extension_dir);
+            $vendor = str_replace(dirname($vendor), '', $vendor);
+            $vendor = str_replace('/', '', $vendor);
+
+            $table->addRow([$vendor, $name]);
         }
 
         $table->render();
-
     }
 }
