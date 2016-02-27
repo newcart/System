@@ -2,8 +2,9 @@
 
 define('DB_PREFIX', $config->get('db_prefix'));
 
-$config->set('is_admin', basename(realpath('')) == 'admin' ? true : false);
-$config->set('environment', $config->get('is_admin') ? 'admin' : 'catalog');
+//parse_str($_SERVER['QUERY_STRING'], $output);
+
+$config->set('is_admin', $config->get('environment') == 'admin' ? true : false);
 
 //get domain name
 define('DOMAINNAME', isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : null);
