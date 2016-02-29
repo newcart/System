@@ -2,7 +2,8 @@
 
 namespace Newcart\Tool\Commands;
 
-use Newcart\Tool\Helper\Util;
+use Newcart\System\Helper\Util;
+use Newcart\System\Libraries\Extension;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +20,7 @@ class ListExtensionCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $extensions = glob(Util::pathExtension() . '*/*', GLOB_ONLYDIR);
+        $extensions = glob(Extension::dirExtension() . '*/*', GLOB_ONLYDIR);
 
         $output->writeln('Extensions List');
 

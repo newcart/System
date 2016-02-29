@@ -21,6 +21,20 @@ if (file_exists($load)) {
     die();
 }
 
+$config->set('environment', 'catalog');
+
+//constans
+$constants = VENDOR_DIRECTORY . '/newcart/system/src/Newcart/System/constants.php';
+if (file_exists($constants)) {
+    require_once $constants;
+} else {
+    print('constants file not found' . PHP_EOL);
+    die();
+}
+
+//Bootstrap
+require_once(DIR_APPLICATION . 'bootstrap.php');
+
 use Symfony\Component\Console\Application;
 
 

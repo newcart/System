@@ -2,6 +2,8 @@
 
 namespace Newcart\System\Libraries;
 
+use \Newcart\System\Helper\Util;
+
 /**
  * Class Theme
  * @description Library desenvolvida para
@@ -10,30 +12,8 @@ namespace Newcart\System\Libraries;
  */
 class Theme
 {
-    /**
-     * Opencart Registry
-     * @var \Registry
-     */
-    private $registry;
-
-    public function __construct($registry = null)
+    public function __construct()
     {
-        if(!$registry) {
-            global $registry;
-        }
-
-        $this->registry = $registry;
-    }
-
-    /**
-     * Shorcut get config
-     * @param $key
-     * @return mixed
-     */
-    private static function getConfig($key)
-    {
-        $static = new Static;
-        return $static->registry->get('config')->get($key);
     }
 
     /**
@@ -45,15 +25,15 @@ class Theme
      */
     public function asset($src, $minify = false)
     {
-        if (!$this->getConfig('is_admin')) {
+        if (!Util::getConfig('is_admin')) {
 
-            if (file_exists(DIR_TEMPLATE . $this->getName() . '/' . $this->getConfig('assets_path') . '/' . $src)) {
-                return $this->getConfig('theme_path') . '/' . $this->getName() . '/' . $this->getConfig('assets_path') . '/' . $src;
+            if (file_exists(DIR_TEMPLATE . $this->getName() . '/' . Util::getConfig('assets_path') . '/' . $src)) {
+                return Util::getConfig('theme_path') . '/' . $this->getName() . '/' . Util::getConfig('assets_path') . '/' . $src;
             }
 
-        } else if (file_exists(DIR_TEMPLATE . '../' . $src)) {
+        } else if (file_exists(DIR_APPLICATION . $src)) {
 
-            return 'admin/view/' . $src;
+            return '//' . BASEURL . 'core/admin/' . $src;
 
         }
 
@@ -66,7 +46,7 @@ class Theme
      */
     public function getName()
     {
-        return $this->getConfig('config_template');
+        return Util::getConfig('config_template');
     }
 
     /**
@@ -75,15 +55,36 @@ class Theme
      */
     public function getUrl()
     {
-        if ($this->getConfig('config_secure')) {
-            return HTTPS_SERVER . '' . $this->getConfig('theme_path') . '/' . $this->getName() . '/';
+        if (Util::getConfig('config_secure')) {
+            return HTTPS_SERVER . '' . Util::getConfig('theme_path') . '/' . $this->getName() . '/';
         }
 
-        return HTTP_SERVER . '' . $this->getConfig('theme_path') . '/' . $this->getName() . '/';
+        return HTTP_SERVER . '' . Util::getConfig('theme_path') . '/' . $this->getName() . '/';
     }
 
     public function getThemes()
     {
 
+    }
+
+    /**
+     * Pega os arquivos do tema da extensao
+     * @param $folder for theme
+     * @return array
+     */
+    public static function getFilesTheme($folder)
+    {
+        if (is_dir($folder . '/' . Util::getConfig('theme_path'))) {
+            return Util::getFiles($folder . '/' . Util::getConfig('theme_path'));
+        }
+    }
+
+    /**
+     * Pega os caminhos dos temas intalados
+     * @return array
+     */
+    public static function getThemesPath()
+    {
+        return glob(DIR_TEMPLATE . '*');
     }
 }

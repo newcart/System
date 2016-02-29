@@ -3,47 +3,23 @@
 namespace Newcart\System\Libraries;
 
 
+use \Newcart\System\Helper\Util;
+
 class Extension
 {
-    /**
-     * Opencart Registry
-     * @var \Registry
-     */
-    private $registry;
-
-    public function __construct($registry = null)
-    {
-        if (!$registry) {
-            global $registry;
-        }
-
-        $this->registry = $registry;
-    }
-
-    /**
-     * Shorcut get config
-     * @param $key
-     * @return mixed
-     */
-    private static function getConfig($key)
-    {
-        $static = new Static;
-        return $static->registry->get('config')->get($key);
-    }
+    public function __construct() { }
 
     /**
      * Get all extensions
      */
     public static function getAll()
     {
-        $static = new Static();
-
-        if ($static->getCache()->get('extensions')) {
-            return $static->getCache()->get('extensions');
+        if (Util::getCache()->get('extensions')) {
+            return Util::getCache()->get('extensions');
         } else {
             $extensions = [];
 
-            $extensions_path = glob(DIR_ROOT . '/extensions/*/*/', GLOB_ONLYDIR);
+            $extensions_path = glob(self::dirExtension() . '*/*/', GLOB_ONLYDIR);
             foreach ($extensions_path as $extension_path) {
 
                 $name = basename($extension_path);
@@ -52,18 +28,18 @@ class Extension
                 $extensions[$vendor . '/' . $name]['path'] = $extension_path;
             }
 
-            $static->getCache()->set('extensions', $extensions);
+            Util::getCache()->set('extensions', $extensions);
 
             return $extensions;
         }
     }
 
     /**
-     * Get cache class
-     * @return \Cache|null
+     * Diretorio onde a extensoes vao ficar
+     * @return string
      */
-    private function getCache()
+    public static function dirExtension()
     {
-        return $this->registry->get('cache');
+        return DIR_ROOT . '/' . Util::getConfig('extension_path') . '/';
     }
 }

@@ -1,18 +1,57 @@
 <?php
 
-namespace Newcart\Tool\Helper;
+namespace Newcart\System\Helper;
 
 
 class Util
 {
     /**
-     * Caminho onde a extensoes vao ficar
-     * @return string
+     * Opencart Registry
+     * @var \Registry
      */
-    public static function pathExtension()
+    private $registry;
+
+    public function __construct($registry = null)
     {
-        global $config;
-        return DIR_ROOT . '/' . $config->get('extension_path') . '/';
+        if(!$registry) {
+            global $registry;
+        }
+
+        $this->registry = $registry;
+    }
+
+    public static function requireConstants()
+    {
+        require_once __DIR__ . '/../constants.php';
+    }
+
+    /**
+     * Shorcut get config
+     * @param $key
+     * @return mixed
+     */
+    public static function getConfig($key)
+    {
+        return self::getRegistry()->get('config')->get($key);
+    }
+
+    /**
+     * Get registry opencart
+     * @return \Registry
+     */
+    public static function getRegistry()
+    {
+        $static = new Static;
+        return $static->registry;
+    }
+
+    /**
+     * Get cache class
+     * @return \Cache|null
+     */
+    public static function getCache()
+    {
+        return self::getRegistry()->get('cache');
     }
 
     /**
@@ -66,26 +105,5 @@ class Util
         }
 
         return $output;
-    }
-
-    /**
-     * Pega os arquivos do tema da extensao
-     * @param $folder for extension
-     * @return array
-     */
-    public static function getFilesTheme($folder)
-    {
-        if (is_dir($folder . '/' . 'theme')) {
-            return self::getFiles($folder . '/' . 'theme');
-        }
-    }
-
-    /**
-     * Pega os caminhos dos temas intalados
-     * @return array
-     */
-    public static function getThemesPath()
-    {
-        return glob(DIR_TEMPLATE . '*');
     }
 }
