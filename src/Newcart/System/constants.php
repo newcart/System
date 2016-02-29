@@ -19,19 +19,21 @@ define('BASEURL', $base_url);
 // HTTP
 if($config->get('is_admin')) {
     define('HTTP_SERVER', 'http://' . BASEURL . 'core/admin/');
+    define('HTTP_SERVER_DYNAMIC', 'http://' . BASEURL . $config->get('admin_path') . '/');
 } else {
     define('HTTP_SERVER', 'http://' . BASEURL);
 }
 
-define('HTTP_CATALOG', 'http://' . BASEURL);
-
 // HTTPS
 if($config->get('is_admin')) {
-    define('HTTPS_SERVER', 'http://' . BASEURL . 'core/admin/');
+    define('HTTPS_SERVER', 'https://' . BASEURL . 'core/admin/');
+    define('HTTPS_SERVER_DYNAMIC', 'https://' . BASEURL . $config->get('admin_path') . '/');
 } else {
-    define('HTTPS_SERVER', 'http://' . BASEURL);
+    define('HTTPS_SERVER', 'https://' . BASEURL);
 }
-define('HTTPS_CATALOG', 'http://' . BASEURL);
+
+define('HTTP_CATALOG', 'http://' . BASEURL);
+define('HTTPS_CATALOG', 'https://' . BASEURL);
 
 // DIR
 if($config->get('is_admin')) {
