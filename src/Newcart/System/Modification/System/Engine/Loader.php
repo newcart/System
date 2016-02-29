@@ -9,6 +9,12 @@ use Newcart\System\Vqmod\Vqmod;
 
 class Loader
 {
+    /**
+     * Modification view opencart
+     * @param $template
+     * @param array $data
+     * @return string
+     */
     public function view($template, $data = array())
     {
         //se o twig for desativado
@@ -155,5 +161,66 @@ class Loader
         }
 
         return $output;
+    }
+
+    /**
+     * Modification helper opencart
+     * @param $helper
+     * @return mixed|string
+     */
+    public function helper($helper)
+    {
+        global $registry;
+
+        //load extension helper
+        $extensions_file = glob(DIR_ROOT . '/' . $registry->get('config')->get('extension_path') . '/*/*/helper/' . str_replace('../', '', (string)$helper) . '.php');
+        if ($extensions_file && is_array($extensions_file) && count($extensions_file)) {
+            $file = $extensions_file[0];
+        } else {
+            $file = DIR_SYSTEM . 'helper/' . str_replace('../', '', (string)$helper) . '.php';
+        }
+
+        return $file;
+    }
+
+    /**
+     * Modification model opencart
+     * @param $model
+     * @return mixed|string
+     */
+    public function model($model)
+    {
+        global $registry;
+
+        //load extension model
+        $extensions_file = glob(DIR_ROOT . '/' . $registry->get('config')->get('extension_path') . '/*/*/' . $registry->get('config')->get('environment') . '/model/' . $model . '.php');
+        if ($extensions_file && is_array($extensions_file) && count($extensions_file)) {
+            $file = $extensions_file[0];
+        } else {
+            $file = DIR_APPLICATION . 'model/' . $model . '.php';
+        }
+
+        return $file;
+    }
+
+    /**
+     * Modification controller opencart
+     * @param $route
+     * @param $parts
+     * @return mixed|string
+     */
+    public function controller($route, $parts)
+    {
+        global $registry;
+
+        //load extension controller
+        $extensions_file = glob(DIR_ROOT . '/' . $registry->get('config')->get('extension_path') . '/*/*/' . $registry->get('config')->get('environment') . '/controller/' . implode('/', $parts) . '.php');
+        if ($extensions_file && is_array($extensions_file) && count($extensions_file)) {
+            $file = $extensions_file[0];
+        } else {
+            $file = DIR_APPLICATION . 'controller/' . implode('/', $parts) . '.php';
+        }
+
+        return $file;
     }
 }
