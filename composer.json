@@ -18,7 +18,15 @@
     "newcart/opencart": "dev-develop",
     "symfony/console": "^2.7",
     "foolz/plugin": "^1.0",
-    "illuminate/database": "5.1.*"
+    "illuminate/config": "5.1.*",
+    "illuminate/container": "5.1.*",
+    "illuminate/support": "5.1.*",
+    "illuminate/contracts": "5.1.*",
+    "illuminate/support": "5.1.*",
+    "illuminate/events": "5.1.*",
+    "illuminate/filesystem": "5.1.*",
+    "illuminate/database": "5.1.*",
+    "illuminate/validation": "5.1.*"
   },
   "autoload": {
     "psr-0": {
