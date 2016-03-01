@@ -17,7 +17,8 @@
     "hassankhan/config": "^0.10.0",
     "newcart/opencart": "dev-develop",
     "symfony/console": "^2.7",
-    "foolz/plugin": "^1.0"
+    "foolz/plugin": "^1.0",
+    "illuminate/database": "5.1.*"
   },
   "autoload": {
     "psr-0": {
