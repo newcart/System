@@ -180,7 +180,12 @@ class Loader
             $file = DIR_SYSTEM . 'helper/' . str_replace('../', '', (string)$helper) . '.php';
         }
 
-        return $file;
+        if (file_exists($file)) {
+            include_once($file);
+        } else {
+            trigger_error('Error: Could not load helper ' . $file . '!');
+            exit();
+        }
     }
 
     /**
@@ -188,10 +193,8 @@ class Loader
      * @param $model
      * @return mixed|string
      */
-    public function model($model)
+    public function model($model, $registry)
     {
-        global $registry;
-
         //load extension model
         $extensions_file = glob(DIR_ROOT . '/' . $registry->get('config')->get('extension_path') . '/*/*/' . $registry->get('config')->get('environment') . '/model/' . $model . '.php');
         if ($extensions_file && is_array($extensions_file) && count($extensions_file)) {
@@ -200,27 +203,74 @@ class Loader
             $file = DIR_APPLICATION . 'model/' . $model . '.php';
         }
 
-        return $file;
+        $class = 'Model' . preg_replace('/[^a-zA-Z0-9]/', '', $model);
+
+        if (file_exists($file)) {
+            include_once($file);
+
+            $instance = new $class($registry);
+
+            $registry->set('model_' . str_replace('/', '_', $model), $instance);
+
+            return $instance;
+
+        } else {
+            trigger_error('Error: Could not load model ' . $file . '!');
+            exit();
+        }
     }
 
     /**
      * Modification controller opencart
      * @param $route
-     * @param $parts
+     * @param $data
      * @return mixed|string
      */
-    public function controller($route, $parts)
+    public function controller($route, $data, $registry)
     {
-        global $registry;
+        $parts = explode('/', str_replace('../', '', (string)$route));
 
-        //load extension controller
-        $extensions_file = glob(DIR_ROOT . '/' . $registry->get('config')->get('extension_path') . '/*/*/' . $registry->get('config')->get('environment') . '/controller/' . implode('/', $parts) . '.php');
-        if ($extensions_file && is_array($extensions_file) && count($extensions_file)) {
-            $file = $extensions_file[0];
-        } else {
-            $file = DIR_APPLICATION . 'controller/' . implode('/', $parts) . '.php';
+        // Break apart the route
+        while ($parts) {
+
+            //load extension controller
+            $extensions_file = glob(DIR_ROOT . '/' . $registry->get('config')->get('extension_path') . '/*/*/' . $registry->get('config')->get('environment') . '/controller/' . implode('/', $parts) . '.php');
+            if ($extensions_file && is_array($extensions_file) && count($extensions_file)) {
+                $file = $extensions_file[0];
+            } else {
+                $file = DIR_APPLICATION . 'controller/' . implode('/', $parts) . '.php';
+            }
+
+            $class = 'Controller' . preg_replace('/[^a-zA-Z0-9]/', '', implode('/', $parts));
+
+            if (is_file($file)) {
+                include_once($file);
+
+                break;
+            } else {
+                $method = array_pop($parts);
+            }
         }
 
-        return $file;
+        $controller = new $class($registry);
+
+        if (!isset($method)) {
+            $method = 'index';
+        }
+
+        // Stop any magical methods being called
+        if (substr($method, 0, 2) == '__') {
+            return false;
+        }
+
+        $output = '';
+
+        if (is_callable(array($controller, $method))) {
+            $output = call_user_func(array($controller, $method), $data);
+        }
+
+        // $this->event->trigger('post.controller.' . $route, $output);
+
+        return $output;
     }
 }
