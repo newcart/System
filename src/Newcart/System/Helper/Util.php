@@ -42,7 +42,12 @@ class Util
     public static function getRegistry()
     {
         $static = new Static;
-        return $static->registry;
+        if($static->registry) {
+            return $static->registry;
+        } else {
+            global $registry;
+            return $registry;
+        }
     }
 
     /**

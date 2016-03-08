@@ -85,6 +85,11 @@ class Theme
      */
     public static function getThemesPath()
     {
-        return glob(DIR_TEMPLATE . '*');
+        return glob(DIR_TEMPLATE . '*/*/');
+    }
+
+    public static function dirCurrentTheme()
+    {
+        return DIR_TEMPLATE . Util::getConfig('config_template');
     }
 }
