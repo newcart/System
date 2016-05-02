@@ -11,7 +11,7 @@ class Loader
 {
     /**
      * Modification view opencart
-     * @param $template
+     * @param       $template
      * @param array $data
      * @return string
      */
@@ -47,6 +47,7 @@ class Loader
             if (Util::getConfig('is_admin')) {
                 $paths[] = DIR_TEMPLATE;
             } else {
+
                 //load theme view
                 if (is_dir(DIR_TEMPLATE . $current_theme . '/template/')) {
                     $paths[] = DIR_TEMPLATE . $current_theme . '/template/';
@@ -56,37 +57,40 @@ class Loader
                 if (is_dir(DIR_TEMPLATE . Util::getConfig('theme_default') . '/template/')) {
                     $paths[] = DIR_TEMPLATE . Util::getConfig('theme_default') . '/template/';
                 }
+            }
+        }
 
-                //Get all extensions
-                $extensions = Extension::getAll();
+        //Get all extensions
+        $extensions = Extension::getAll();
 
-                if ($extensions) {
-                    //load extension view
-                    if (Util::getConfig('is_admin')) {
+        if ($extensions) {
+            //load extension view
+            if (Util::getConfig('is_admin')) {
 
-                        $extensions_path = glob(
-                            DIR_ROOT . '/' . Util::getConfig('extension_path') .
-                            '/*/*/' . Util::getConfig('admin_path') . '/view/template/',
-                            GLOB_ONLYDIR
-                        );
+                foreach (Util::getConfig('admin_extensions_paths') as $path_extension) {
+                    $extensions_path = glob(
+                        DIR_ROOT . '/' . Util::getConfig('extension_path') .
+                        '/*/*/' . $path_extension . '/view/template/',
+                        GLOB_ONLYDIR
+                    );
 
-                        if ($extensions_path && is_array($extensions_path) && count($extensions_path)) {
+                    if ($extensions_path && is_array($extensions_path) && count($extensions_path)) {
+                        $paths = array_merge($paths, $extensions_path);
+                    }
+                }
+
+            } else {
+
+                $extensions_path = glob(
+                    DIR_ROOT . '/' . Util::getConfig('extension_path') . '/*/*/' . Util::getConfig('theme_path') . '/template/',
+                    GLOB_ONLYDIR
+                );
+
+                if ($extensions_path && is_array($extensions_path) && count($extensions_path)) {
+                    foreach ($extensions_path as $item) {
+                        if (file_exists($item . $view)) {
+                            $template = $view;
                             $paths = array_merge($paths, $extensions_path);
-                        }
-                    } else {
-
-                        $extensions_path = glob(
-                            DIR_ROOT . '/' . Util::getConfig('extension_path') . '/*/*/' . Util::getConfig('theme_path') . '/template/',
-                            GLOB_ONLYDIR
-                        );
-
-                        if ($extensions_path && is_array($extensions_path) && count($extensions_path)) {
-                            foreach ($extensions_path as $item) {
-                                if (file_exists($item . $view)) {
-                                    $template = $view;
-                                    $paths = array_merge($paths, $extensions_path);
-                                }
-                            }
                         }
                     }
                 }
@@ -102,8 +106,8 @@ class Loader
 
         $twig = new \Twig_Environment($fileSystem, array(
             'autoescape' => Util::getConfig('twig_autoescape'),
-            'cache' => $cache,
-            'debug' => Util::getConfig('twig_debug')
+            'cache'      => $cache,
+            'debug'      => Util::getConfig('twig_debug')
         ));
 
         $twig->addExtension(new \Twig_Extension_Debug());
@@ -131,7 +135,7 @@ class Loader
 
     /**
      * Get view raw php tpl
-     * @param $template
+     * @param       $template
      * @param array $data
      * @return string
      */
